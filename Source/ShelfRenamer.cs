@@ -1,36 +1,81 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using RimWorld;
 using Verse;
 using Harmony;
 using UnityEngine;
+using HugsLib;
+using HugsLib.Utils;
 
 namespace ShelfRenamer
 {
-	[HarmonyPatch(typeof(Building_Storage))]
-	[HarmonyPatch("GetGizmos")]
-	public static class ShelfRenamer
-    {
+	// HugsLib config
+	public class ShelfRenamer : ModBase
+	{
 
-		[HarmonyPostfix]
-		public static void RenameShelves(Building_Storage __instance, ref IEnumerable<Gizmo> __result)
+        // Having a state variable means our patches can find us and our data store.
+		internal static ShelfRenamer Instance { get; private set; }
+		private DataStore _dataStore;
+
+		public ShelfRenamer()
 		{
-			// If it has a user-accessible storage tab, then allow renaming.
-
-			// TODO: Don't add a rename button if one already exists.
-
-			if (__instance.StorageTabVisible)
-			{
-				__result.Add(new Command_Action
-				{
-					icon = ContentFinder<Texture2D>.Get("UI/Icons/Rename", true),
-					defaultDesc = "Rename".Translate(),
-					defaultLabel = "Rename".Translate(),
-					activateSound = SoundDef.Named("Click"),
-					action = delegate { Find.WindowStack.Add(new Dialog_Rename(__instance)); }
-                    // groupKey ??
-				});
-			}
+			Instance = this;
 		}
-    }
+
+		public override string ModIdentifier
+		{
+			get { return "ShelfRenamer"; }
+		}
+
+		public override void WorldLoaded()
+		{
+			base.WorldLoaded();
+			_dataStore = UtilityWorldObjectManager.GetUtilityWorldObject<DataStore>();
+
+		}
+        
+		public void SetName(Thing thing, string name)
+		{
+			_dataStore.shelfNames.Add(thing.ThingID, name);
+		}
+        
+		public bool IsRenamed(Thing thing)
+		{
+			if (thing == null)
+			{
+				return false;
+			}
+			return _dataStore.shelfNames.ContainsKey(thing.ThingID);
+		}
+
+		public string NameOf(Thing thing)
+		{
+			return _dataStore.shelfNames[thing.ThingID];
+		}
+
+	}
+
+    // Data store where we keep our shelf names.
+	public class DataStore : UtilityWorldObject
+	{
+		public Dictionary<string, string> shelfNames = new Dictionary<string, string>();
+
+        // Expose our data store to the serialiser.
+		public override void ExposeData()
+		{
+			base.ExposeData();
+
+			Scribe_Collections.Look(
+				ref shelfNames, "shelfNames",
+				LookMode.Value, LookMode.Deep
+			);
+
+            /*
+			if (Scribe.mode == LoadSaveMode.LoadingVars && shelfNames == null)
+			{
+				shelfNames = new Dictionary<string, string>();
+			}
+			*/
+		}
+	}
+    
 }

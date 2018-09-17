@@ -28,12 +28,11 @@ namespace ShelfRenamer
 		public override void DoWindowContents(Rect inRect)
 		{
 			Text.Font = GameFont.Small;
-			bool enter = false;
 
             // If the user hits enter, we should accept their new name
 			if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Return)
 			{
-				enter = true;
+				SetName(this.inputText);
 				Event.current.Use();
 			}
            
@@ -46,17 +45,20 @@ namespace ShelfRenamer
 				this.inputText = text;
 			}
 
-            // If the user hits enter or OK, then stash the label.
-			if (Widgets.ButtonText(new Rect(15f, inRect.height - 35f - 15f, inRect.width - 15f - 15f, 35f), "OK", true, false, true) || enter)
+            // OK Button
+			if (Widgets.ButtonText(new Rect(15f, inRect.height - 35f - 15f, inRect.width - 15f - 15f, 35f), "OK", true, false, true))
 			{
-				if (this.inputText.Length > 0)
-				{
-					// Label is read-only, so we need to be a little more tricksy by getting the backing variable and assigning to that.
-					var label = typeof(Building_Storage).GetField("<Label>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic);
-					label.SetValue(building, this.inputText);
-					Find.WindowStack.TryRemove(this, true);
-				}
+				SetName(this.inputText);
 			}
+		}
+
+		void SetName(string newName)
+		{
+			if (newName.Length > 0)
+            {
+				ShelfRenamer.Instance.SetName(this.building, this.inputText);
+                Find.WindowStack.TryRemove(this, true);
+            }
 		}
 	}
 }
