@@ -13,17 +13,21 @@ namespace ShelfRenamer
     {
         public static void Postfix(Building_Storage __instance, ref IEnumerable<Gizmo> __result)
         {
+			// ShelfRenamer.Instance.Log("Gizmoing " + __instance.def.thingClass.Name);
+
+            // RimFridge already has its own renamer.
+			if (__instance.def.thingClass.Name == "Building_Refrigerator")
+			{
+				return;
+			}
 
             // If it has a user-accessible storage tab, then allow renaming.
             if (__instance.StorageTabVisible)
             {
-
-                // TODO: Don't add a rename button if one already exists.
-
+                // Add our own rename button, since none appears to exist already.
                 __result = __result.Add(new Command_Action
                 {
-                    // TODO: Bundle own icon so we don't depend on RimFridge.
-                    icon = ContentFinder<Texture2D>.Get("UI/Icons/Rename", true),
+                    icon = ContentFinder<Texture2D>.Get("UI/Icons/ShelfRenamer", true),
                     defaultDesc = "Rename".Translate(),
                     defaultLabel = "Rename".Translate(),
                     activateSound = SoundDef.Named("Click"),
@@ -61,6 +65,4 @@ namespace ShelfRenamer
 			ShelfRenamer.Instance.ClearName(__instance);
 		}
 	}
-
-    // TODO: Clear entries in our data store for items which are destroyed.
- }
+}

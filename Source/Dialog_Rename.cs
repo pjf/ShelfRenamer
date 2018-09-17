@@ -4,6 +4,7 @@ using RimWorld;
 using System.Reflection;
 
 // Huge thanks to RimFridge, from which much of this code was lifted.
+// RimFridge is (C) 2017 Travis Offtematt.
 
 namespace ShelfRenamer
 {

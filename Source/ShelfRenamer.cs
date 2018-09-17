@@ -12,7 +12,7 @@ namespace ShelfRenamer
 	public class ShelfRenamer : ModBase
 	{
 
-        // Having a state variable means our patches can find us and our data store.
+		// Having a state variable means our patches can find us and our data store.
 		internal static ShelfRenamer Instance { get; private set; }
 		private DataStore _dataStore;
 
@@ -20,7 +20,7 @@ namespace ShelfRenamer
 		{
 			Instance = this;
 		}
-
+        
 		public override string ModIdentifier
 		{
 			get { return "ShelfRenamer"; }
@@ -44,6 +44,11 @@ namespace ShelfRenamer
 			{
 				_dataStore.shelfNames[thing.ThingID] = name;
 			}
+		}
+
+		public void Log(string str)
+		{
+			this.Logger.Message(str);
 		}
 
 		public void ClearName(Thing thing)

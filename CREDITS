@@ -1,0 +1,8 @@
+A huge amount of thanks to:
+
+- HugsLib, for making mod storage and release notes easy.
+- Harmony, for making patching easy.
+- RimFridge, for original inspiration, the rename icon, and first draft of Dialog_Rename
+
+Rename Icon and parts of Dialog_Rename.cs are (C) 2017 Travis Offtematt, used under
+the MIT license from https://github.com/KiameV/rimworld-rimfridge/
