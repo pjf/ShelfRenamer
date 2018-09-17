@@ -1,67 +1,30 @@
 ﻿using UnityEngine;
 using Verse;
 using RimWorld;
-using System.Reflection;
-
-// Huge thanks to RimFridge, from which much of this code was lifted.
-// RimFridge is (C) 2017 Travis Offtematt.
 
 namespace ShelfRenamer
 {
-	public class Dialog_Rename : Window
+	public class Dialog_Rename : Verse.Dialog_Rename
     {
-		private string inputText = "";
-		private Building_Storage building;
-		private readonly int maxLength = 28;
+		private Building_Storage building;      
 
-		public override Vector2 InitialSize => new Vector2(280f, 175f);
-
-		public Dialog_Rename(Building_Storage building)
+		public Dialog_Rename(Building_Storage building) :base()
         {
-			this.forcePause = true;
-			this.doCloseX = true;
-			this.closeOnClickedOutside = true;
-			this.absorbInputAroundWindow = true;
 			this.building = building;
-			this.inputText = building.Label;
+			this.curName = building.Label;
 		}
 
-		public override void DoWindowContents(Rect inRect)
+        // By default empty strings are not allowed. We'll override
+		// that and accept everything; an empty string will reset our
+        // name to the default.
+		protected override AcceptanceReport NameIsValid(string name)
 		{
-			Text.Font = GameFont.Small;
-
-            // Textfield to type in, populated with the old name.
-			string text = Widgets.TextField(new Rect(0f, 15f, inRect.width, 35f), this.inputText);
-
-            // Don't accept names that are too long
-			if (text.Length < this.maxLength)
-			{
-				this.inputText = text;
-			}
-
-            /*
-
-			// If the user hits enter, we should accept their new name.
-            // EXCEPT THIS DOESN'T WORK.... WHY!??!?
-            if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Return)
-            {
-                SetName(this.inputText);
-                Event.current.Use();
-            }
-
-            */
-
-            // OK Button
-			if (Widgets.ButtonText(new Rect(15f, inRect.height - 35f - 15f, inRect.width - 15f - 15f, 35f), "OK", true, false, true))
-			{
-				SetName(this.inputText);
-			}
+			return true;
 		}
-
-		void SetName(string newName)
+  
+		protected override void SetName(string newName)
 		{
-			ShelfRenamer.Instance.SetName(this.building, this.inputText);
-            Find.WindowStack.TryRemove(this, true);
+			ShelfRenamer.Instance.SetName(this.building, newName);
 		}
 	}
 }
