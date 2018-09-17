@@ -29,13 +29,6 @@ namespace ShelfRenamer
 		{
 			Text.Font = GameFont.Small;
 
-            // If the user hits enter, we should accept their new name
-			if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Return)
-			{
-				SetName(this.inputText);
-				Event.current.Use();
-			}
-           
             // Textfield to type in, populated with the old name.
 			string text = Widgets.TextField(new Rect(0f, 15f, inRect.width, 35f), this.inputText);
 
@@ -44,6 +37,18 @@ namespace ShelfRenamer
 			{
 				this.inputText = text;
 			}
+
+            /*
+
+			// If the user hits enter, we should accept their new name.
+            // EXCEPT THIS DOESN'T WORK.... WHY!??!?
+            if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Return)
+            {
+                SetName(this.inputText);
+                Event.current.Use();
+            }
+
+            */
 
             // OK Button
 			if (Widgets.ButtonText(new Rect(15f, inRect.height - 35f - 15f, inRect.width - 15f - 15f, 35f), "OK", true, false, true))
@@ -54,11 +59,8 @@ namespace ShelfRenamer
 
 		void SetName(string newName)
 		{
-			if (newName.Length > 0)
-            {
-				ShelfRenamer.Instance.SetName(this.building, this.inputText);
-                Find.WindowStack.TryRemove(this, true);
-            }
+			ShelfRenamer.Instance.SetName(this.building, this.inputText);
+            Find.WindowStack.TryRemove(this, true);
 		}
 	}
 }

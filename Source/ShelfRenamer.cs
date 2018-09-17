@@ -33,9 +33,22 @@ namespace ShelfRenamer
 
 		}
         
+        // Set the name of a thing.
 		public void SetName(Thing thing, string name)
 		{
-			_dataStore.shelfNames.Add(thing.ThingID, name);
+			if (name.Length == 0)
+			{
+				ClearName(thing);
+			}
+			else
+			{
+				_dataStore.shelfNames[thing.ThingID] = name;
+			}
+		}
+
+		public void ClearName(Thing thing)
+		{
+			_dataStore.shelfNames.Remove(thing.ThingID);
 		}
         
 		public bool IsRenamed(Thing thing)
@@ -64,18 +77,7 @@ namespace ShelfRenamer
 		{
 			base.ExposeData();
 
-			Scribe_Collections.Look(
-				ref shelfNames, "shelfNames",
-				LookMode.Value, LookMode.Deep
-			);
-
-            /*
-			if (Scribe.mode == LoadSaveMode.LoadingVars && shelfNames == null)
-			{
-				shelfNames = new Dictionary<string, string>();
-			}
-			*/
+			Scribe_Collections.Look(ref shelfNames, "shelfNames");
 		}
-	}
-    
+	}    
 }
