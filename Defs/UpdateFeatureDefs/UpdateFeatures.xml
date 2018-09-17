@@ -10,4 +10,14 @@
         <assemblyVersion>0.1.0</assemblyVersion>
         <content>Welcome to Shelf Renamer! Please report any bugs you might find (or compliments you wish to give) on the mod's Steam Workshop page.</content>
     </HugsLib.UpdateFeatureDef>
+
+    <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+        <defName>ShelfRenamer_1_0_0</defName>
+        <assemblyVersion>1.0.0</assemblyVersion>
+        <content>Shelf Renamer v1.0.0
+
+- Fixed bug where pressing enter in the rename dialog wouldn't save.
+- Previous name now starts selected in rename dialog for easier replacement.
+        </content>
+    </HugsLib.UpdateFeatureDef>
 </Defs>
