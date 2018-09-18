@@ -6,20 +6,20 @@ using UnityEngine;
 
 namespace ShelfRenamer
 {
-	// Add a "Rename" Gizmo to storage buildings.
-	[HarmonyPatch(typeof(Building_Storage))]
-	[HarmonyPatch("GetGizmos")]
+    // Add a "Rename" Gizmo to storage buildings.
+    [HarmonyPatch(typeof(Building_Storage))]
+    [HarmonyPatch("GetGizmos")]
     public static class Patch_Building_Storage_GetGizmos
     {
         public static void Postfix(Building_Storage __instance, ref IEnumerable<Gizmo> __result)
         {
-			// ShelfRenamer.Instance.Log("Gizmoing " + __instance.def.thingClass.Name);
+            // ShelfRenamer.Instance.Log("Gizmoing " + __instance.def.thingClass.Name);
 
             // RimFridge already has its own renamer.
-			if (__instance.def.thingClass.Name == "Building_Refrigerator")
-			{
-				return;
-			}
+            if (__instance.def.thingClass.Name == "Building_Refrigerator")
+            {
+                return;
+            }
 
             // If it has a user-accessible storage tab, then allow renaming.
             if (__instance.StorageTabVisible)
@@ -39,8 +39,8 @@ namespace ShelfRenamer
 
     // Label checks if we've got a renamed shelf. If not, runs the original code.
     // Building_Storage inherits Label from Thing, so that's what we need to patch.
-	[HarmonyPatch(typeof(Building_Storage))]
-	[HarmonyPatch("Label", PropertyMethod.Getter)]
+    [HarmonyPatch(typeof(Building_Storage))]
+    [HarmonyPatch("Label", PropertyMethod.Getter)]
     public static class Patch_Building_Storage_Label
     {
         public static bool Prefix(Thing __instance, ref string __result)
@@ -56,13 +56,13 @@ namespace ShelfRenamer
         }
     }
 
-	[HarmonyPatch(typeof(Building_Storage))]
-	[HarmonyPatch("DeSpawn")]
+    [HarmonyPatch(typeof(Building_Storage))]
+    [HarmonyPatch("DeSpawn")]
     public static class Patch_Building_Storage_DeSpawn
-	{
-		public static void Prefix(Thing __instance)
-		{
-			ShelfRenamer.Instance.ClearName(__instance);
-		}
-	}
+    {
+        public static void Prefix(Thing __instance)
+        {
+            ShelfRenamer.Instance.ClearName(__instance);
+        }
+    }
 }
