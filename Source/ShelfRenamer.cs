@@ -53,7 +53,8 @@ namespace ShelfRenamer
 
         public void ClearName(Thing thing)
         {
-            _dataStore.shelfNames.Remove(thing.ThingID);
+			// The many question-marks in this code protect against this being called during WorldGen when our data-store doesn't exist yet.
+            _dataStore?.shelfNames?.Remove(thing.ThingID);
         }
         
         public bool IsRenamed(Thing thing)

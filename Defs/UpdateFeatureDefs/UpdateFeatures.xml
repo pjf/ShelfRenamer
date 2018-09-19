@@ -20,4 +20,12 @@
 - Previous name now starts selected in rename dialog for easier replacement.
         </content>
     </HugsLib.UpdateFeatureDef>
+
+    <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+        <defName>ShelfRenamer_1_0_1</defName>
+        <assemblyVersion>1.0.1</assemblyVersion>
+        <content>
+- Fixed a bug whereby ShelfRenamer would try to track data during WorldGen before it was properly initialised. Many thanks to XeoNovaDan for reporting this bug!
+        </content>
+    </HugsLib.UpdateFeatureDef>
 </Defs>
