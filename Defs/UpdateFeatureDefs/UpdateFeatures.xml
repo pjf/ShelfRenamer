@@ -28,4 +28,12 @@
 - Fixed a bug whereby ShelfRenamer would try to track data during WorldGen before it was properly initialised. Many thanks to XeoNovaDan for reporting this bug!
         </content>
     </HugsLib.UpdateFeatureDef>
+
+    <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+        <defName>ShelfRenamer_1_0_2</defName>
+        <assemblyVersion>1.0.2</assemblyVersion>
+        <content>
+- Fixed compatibility with Prepare Carefully and other mods that could generate storage buildings before WorldGen had completed. Thanks to Mirith for reporting this!
+        </content>
+    </HugsLib.UpdateFeatureDef>
 </Defs>
