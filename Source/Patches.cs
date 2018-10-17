@@ -40,7 +40,7 @@ namespace ShelfRenamer
     // Label checks if we've got a renamed shelf. If not, runs the original code.
     // Building_Storage inherits Label from Thing, so that's what we need to patch.
     [HarmonyPatch(typeof(Building_Storage))]
-    [HarmonyPatch("Label", PropertyMethod.Getter)]
+	[HarmonyPatch("Label", MethodType.Getter)]
     public static class Patch_Building_Storage_Label
     {
         public static bool Prefix(Thing __instance, ref string __result)
